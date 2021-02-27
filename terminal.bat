@@ -11,4 +11,4 @@ if not exist %node% (
 )
 
 cd acerola
-cmd
+cmd /k
