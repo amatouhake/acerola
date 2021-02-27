@@ -1,0 +1,44 @@
+* {
+  font-family: 'Yusei Magic', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#chat {
+  height: calc(100vh - 2.5em);
+  overflow-y: scroll;
+}
+
+form {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 0.5em;
+  padding-left: 1em;
+  background: black;
+}
+
+form #id {
+  width: 20%;
+}
+
+form #msg {
+  width: calc(80% - 14em);
+}
+
+form #range {
+  width: 4em;
+}
+
+form #color {
+  width: 4em;
+}
+
+form label {
+  margin-left: 0.5em;
+  color: white;
+}
+
+form label #submit {
+  display: none;
+}
