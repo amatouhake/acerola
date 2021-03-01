@@ -23,15 +23,15 @@ form #id {
 }
 
 form #msg {
-  width: calc(80% - 14em);
+  width: 50%;
 }
 
 form #range {
-  width: 4em;
+  width: 10%;
 }
 
 form #color {
-  width: 4em;
+  width: 10%;
 }
 
 form label {
