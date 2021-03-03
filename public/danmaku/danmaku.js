@@ -21,25 +21,37 @@ var cursors;
 var player;
 var speed = 1;
 var time = 0;
-var shot;
-var shots;
+var bullet;
+var bullets;
+var meteos;
 var turbo;
 var turbo_time = 0;
 var turbo_delay = 0;
+var hp = 20;
+var hpText;
+var gameOver = false;
+var gameOverText;
+var score = 0;
+var scoreText;
 
 function preload () {
     this.load.image('space', 'assets/space.png');
-    this.load.image('shot', 'assets/shot.png');
+    this.load.image('bullet', 'assets/bullet.png');
+    this.load.image('meteo', 'assets/meteo.png');
     this.load.spritesheet('player', 'assets/player.png', { frameWidth: 48, frameHeight: 48 });
 }
 
 function create () {
     this.add.image(225, 400, 'space');
+    this.physics.world.setBoundsCollision(true, true, true, true);
+
+    cursors = this.input.keyboard.createCursorKeys();
+    shot = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    turbo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+
     player = this.physics.add.sprite(225, 600, 'player');
-
     player.setCollideWorldBounds(true);
-    shots = this.physics.add.group();
-
+    
     this.anims.create({
         key: 'normal',
         frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
@@ -53,21 +65,24 @@ function create () {
         frameRate: 10,
         repeat: -1
     });
+    
+    bullets = this.physics.add.group();
+    meteos = this.physics.add.group();
+    hpText = this.add.text(16, 16, 'HP: 20', { fontSize: '32px', fill: '#fff' });
+    scoreText = this.add.text(16, 48, 'Score: 0', { fontSize: '32px', fill: '#fff' });
 
-    player.anims.play('normal', true);
-
-    cursors = this.input.keyboard.createCursorKeys();
-    shot = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    turbo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+    this.physics.add.collider(bullets, meteos, hitBullet, null, this);
+    this.physics.add.collider(player, meteos, hitPlayer, null, this);
 }
 
-function goodbye(obj) { obj.kill();  obj.destroy();}
-
 function update () {
+    if(gameOver) return;
+
     time += 1;
     if(shot.isDown) {
         if(time%5 == 0) player_shot();
-    }
+    };
+    if(time%10 == 0) spawn_enemy();
 
     if(turbo.isDown && turbo_time <= 100) {
         player.anims.play('turbo', true);
@@ -100,6 +115,31 @@ function update () {
 }
 
 function player_shot() {
-    var shot = shots.create(player.x, player.y, 'shot');
-    shot.setVelocityY(-320);
+    var bullet = bullets.create(player.x, player.y, 'bullet');
+    bullet.setVelocityY(-320);
+}
+
+function spawn_enemy() {
+    var meteo = meteos.create(Math.random()*450, 0, 'meteo');
+    meteo.setVelocityY(320*(Math.random()+0.5));
+    meteo.setVelocityX(160*(Math.random()-0.5));
+}
+
+function hitBullet(bullet, meteo) {
+    bullet.disableBody(true, true);
+    meteo.disableBody(true, true);
+    score += 10;
+    scoreText.setText('Score: ' + score);
+}
+
+function hitPlayer(bullet, meteo) {
+    hp -= 1;
+    hpText.setText('HP: ' + hp);
+    if(hp == 0) {
+        gameOverText = this.add.text(48, 368, 'GAME OVER', { fontSize: '64px', fill: '#f00' });
+        this.physics.pause();
+        player.setTint(0xff0000);
+        gameOver = true;
+    }
+    meteo.disableBody(true, true);
 }
