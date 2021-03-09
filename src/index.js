@@ -1,5 +1,5 @@
 const fs = require('fs');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 const server = require('http').createServer((req, res) => {
   let url = 'public' + (req.url.endsWith('/') ? req.url + 'index.html' : req.url);
   if(fs.existsSync(url)) {

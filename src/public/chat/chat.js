@@ -4,7 +4,6 @@ let chat = document.getElementById('chat');
 let id = document.getElementById('id');
 let msg = document.getElementById('msg');
 let submit = document.getElementById('submit');
-let pic;
 
 submit.onclick = e => {
     if(id.value && msg.value) {

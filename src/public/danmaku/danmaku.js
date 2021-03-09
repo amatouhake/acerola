@@ -100,15 +100,19 @@ function update () {
         }
     }
 
-    if (cursors.left.isDown) {
+    if(cursors.left.isDown && !cursors.right.isDown) {
         player.setVelocityX(-160*speed);
-    } else if (cursors.right.isDown) {
+    } 
+    if(cursors.right.isDown && !cursors.left.isDown) {
         player.setVelocityX(160*speed);
-    } else if (cursors.up.isDown) {
+    }
+    if(cursors.up.isDown && cursors.down.isUp) {
         player.setVelocityY(-160*speed);
-    } else if (cursors.down.isDown) {
+    }
+    if(cursors.down.isDown && cursors.up.isUp) {
         player.setVelocityY(160*speed);
-    } else {
+    }
+    if(cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp) {
         player.setVelocityX(0);
         player.setVelocityY(0)
     }
@@ -120,9 +124,6 @@ function player_shot() {
 }
 
 function spawn_enemy() {
-    var meteo = meteos.create(Math.random()*450, 0, 'meteo');
-    meteo.setVelocityY(320*(Math.random()+0.5));
-    meteo.setVelocityX(160*(Math.random()-0.5));
 }
 
 function hitBullet(bullet, meteo) {
