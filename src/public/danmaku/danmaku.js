@@ -124,6 +124,9 @@ function player_shot() {
 }
 
 function spawn_enemy() {
+    var enemy = meteos.create(450*Math.random(), 0, 'meteo');
+    enemy.setVelocityX(160*(Math.random()-0.5));
+    enemy.setVelocityY(160*Math.random()+160);
 }
 
 function hitBullet(bullet, meteo) {
