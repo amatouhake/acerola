@@ -1,5 +1,4 @@
 * {
-  font-family: 'Yusei Magic', sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -9,7 +8,17 @@
   overflow-y: scroll;
 }
 
-form {
+#commit {
+  position: fixed;
+  bottom: 3em;
+}
+
+.img {
+  width: 200px;
+  height: auto;
+}
+
+#form {
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -18,27 +27,47 @@ form {
   background: black;
 }
 
-form #id {
-  width: 20%;
+#id {
+  width: 16%;
 }
 
-form #msg {
-  width: 50%;
+#msg {
+  width: 48%;
 }
 
-form #range {
-  width: 10%;
+#range {
+  width: 8%;
 }
 
-form #color {
-  width: 10%;
+#color {
+  width: 8%;
 }
 
-form label {
+#font {
+  width: 8%;
+}
+
+#font option[value="sans-serif"] {
+  font-family: sans-serif;
+}
+
+#font option[value="Yusei Magic"] {
+  font-family: 'Yusei Magic', sans-serif;
+}
+
+#font option[value="Hachi Maru Pop"] {
+  font-family: 'Hachi Maru Pop', sans-serif;
+}
+
+#font option[value="DotGothic16"] {
+  font-family: 'DotGothic16', sans-serif;
+}
+
+label {
   margin-left: 0.5em;
   color: white;
 }
 
-form label #submit {
+label #submit {
   display: none;
 }
