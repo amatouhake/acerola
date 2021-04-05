@@ -14,7 +14,7 @@ let storage = multer.diskStorage({
   }
 });
 
-app.post('/upload', multer({ storage: storage }).single('file'), (req, res) => {
+app.post('/upload', multer({storage: storage}).single('file'), (req, res) => {
   res.send('ファイルのアップロードが完了しました。');
   io.emit('img', `<img src="tmp/${req.file.originalname}" class="img">`);
 });
