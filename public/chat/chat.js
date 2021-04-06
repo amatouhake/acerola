@@ -10,7 +10,7 @@ let submit = document.getElementById('submit');
 let selectedFont = font.options[font.selectedIndex].value;
 
 sender.onclick = () => {
-    let sw = open('', 'hoge');
+    open('', 'hoge');
     document.send.target = 'hoge';
     document.send.submit();
 }
@@ -21,6 +21,7 @@ font.onchange = () => {
     msg.style.fontFamily = selectedFont == "sans-serif" ? 'sans-serif' : `'${selectedFont}', sans-serif`;
 }
 
+/*
 submit.onclick = e => {
     if(id.value && msg.value) {
         id.value.length <= 20 ? io.emit('msg', [id.value, msg.value, range.value, color.value, selectedFont]) : alert('名前は20文字以下にして下さい');
@@ -37,7 +38,20 @@ io.on('msg', value => {
     div.style.fontFamily = value[4] == "sans-serif" ? 'sans-serif' : `'${value[4]}', sans-serif`;
     chat.insertAdjacentElement('afterbegin', div);
 });
+*/
 
-io.on('img', value => {
-    chat.insertAdjacentHTML('afterbegin', value);
+submit.onclick = e => {
+    if(id.value && msg.value) {
+        id.value.length <= 20 ? io.emit('chat', msg.value) : alert('名前は20文字以下にして下さい');
+        msg.value = '';
+    } else alert('メッセージを入力して下さい');
+    return e.preventDefault();
+};
+
+io.on('chat', msg => {
+    chat.insertAdjacentHTML('afterbegin', `<p>${msg.name}(@${msg.id}) ${msg.msg}<p>`);
+});
+
+io.on('img', msg => {
+    chat.insertAdjacentHTML('afterbegin', msg);
 });
