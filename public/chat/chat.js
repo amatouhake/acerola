@@ -1,5 +1,6 @@
 var io = io();
 
+let sender = document.getElementById('sender');
 let commit = document.getElementById('commit');
 let chat = document.getElementById('chat');
 let id = document.getElementById('id');
@@ -7,6 +8,12 @@ let msg = document.getElementById('msg');
 let font = document.getElementById('font');
 let submit = document.getElementById('submit');
 let selectedFont = font.options[font.selectedIndex].value;
+
+sender.onclick = () => {
+    let sw = open('', 'hoge');
+    document.send.target = 'hoge';
+    document.send.submit();
+}
 
 font.onchange = () => {
     selectedFont = font.options[font.selectedIndex].value;
@@ -34,7 +41,3 @@ io.on('msg', value => {
 io.on('img', value => {
     chat.insertAdjacentHTML('afterbegin', value);
 });
-
-commit.onclick = () => {
-    window.open('commit.html', '_blank');
-}
