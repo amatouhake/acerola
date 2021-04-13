@@ -8,13 +8,26 @@
   overflow-y: scroll;
 }
 
+.message {
+  margin: 0.5em;
+}
+
+.name {
+  font-weight: bold;
+  float: left;
+}
+
+.id {
+  color: gray;
+}
+
 #commit {
   position: fixed;
   bottom: 3em;
 }
 
 .img {
-  width: 200px;
+  width: 40%;
   height: auto;
 }
 
@@ -24,7 +37,7 @@
   width: 100%;
   padding: 0.5em;
   padding-left: 1em;
-  background: black;
+  background: rgb(9, 10, 21);
 }
 
 #id {
@@ -68,6 +81,6 @@ label {
   color: white;
 }
 
-label #submit {
+label input {
   display: none;
 }

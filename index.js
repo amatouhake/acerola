@@ -2,23 +2,25 @@ const express = require('express');
 const multer = require('multer');
 const app = express();
 const port = process.env.PORT || 80;
+const server = require('http').createServer(app).listen(port, () => console.log(port));
+const io = require('socket.io')(server);
+
+let store = {};
+let storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, __dirname + '/tmp/');
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.originalname);
+  }
+})
 
 app
   .use(express.static('public'))
   .get('/tmp/:file', (req, res) => res.sendFile(`${__dirname}/${req.url}`))
-  .post('/upload', multer({ dest: 'tmp/' }).single('file'), (req, res) => {
-    res.send('<script>close();</script>');
-    io.emit('img', `<img src="../tmp/${req.file.filename}" class="img">`);
-  });
-
-const server = require('http').createServer(app).listen(port, () => require('dns').lookup(require('os').hostname(), (err, add, fam) => console.log(`${add}:${port}`)));
-const io = require('socket.io')(server);
-let store = {};
-let chat = 'chat';
+  .post('/upload', multer({storage}).single('name'), (req, res) => res.end());
 
 io.on('connection', socket => {
-  socket.on('msg', value => io.emit('msg', value));
-  socket.on('multi', value => io.emit('multi', value));
   socket
     .on('join', msg => {
       let room = msg.room;
@@ -26,38 +28,47 @@ io.on('connection', socket => {
         name: msg.name,
         room: room
       };
-      socket.join(room);
+      socket.join(socket.id);
       
-      if(room == chat) {
+      if(room == 'chat') {
         io.emit(room, {
-          id: 'none',
+          id: 'server',
           name: 'server',
-          msg: `${msg.name}(@${socket.id})が入室しました`
+          msg: {
+            text: `${msg.name}@${socket.id}が入室しました`,
+            color: 'green'
+          }
         });
       }
     })
+
     .on('disconnect', () => {
       if(store[socket.id]) {
         let user = store[socket.id];
         let room = user.room;
 
-        if(room == chat) {
+        if(room == 'chat') {
           io.emit(room, {
-            id: 'none',
+            id: 'server',
             name: 'server',
-            msg: `${user.name}(@${socket.id})が退室しました`
+            msg: {
+              text: `${user.name}@${socket.id}が退室しました`,
+              color: 'red'
+            }
           });
         }
 
-        socket.leave(room);
+        socket.leave(socket.id);
         delete user;
       }
     })
+
     .on('chat', msg => {
       io.emit('chat', {
         id: socket.id,
         name: store[socket.id].name,
-        msg: msg
+        msg: msg.msg,
+        img: msg.img
       });
-    });
+    })
 });
