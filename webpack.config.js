@@ -1,6 +1,7 @@
 //const webpack = require("webpack");
+const ASSET_PATH = process.env.ASSET_PATH || '/';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');;
 
 module.exports = (env, options) => {
   let plugins = [
@@ -15,7 +16,8 @@ module.exports = (env, options) => {
   return {
     entry: "./src/client/Main.tsx",
     output: {
-      path: `${__dirname}/public`,
+      path: `${__dirname}/public/`,
+      publicPath: ASSET_PATH,
       filename: "acerola.min.js"
     },
     resolve: {

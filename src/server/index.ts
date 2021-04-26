@@ -17,19 +17,17 @@ const app: express.Express = express();
 const server: http.Server = http.createServer(app);
 const io: socketIo.Server = new socketIo.Server(server);
 const port: number = Number(process.env.PORT) || 80;
-const cwd: string = process.cwd();
 const storage: multer.StorageEngine = multer.diskStorage({
   destination: (req, file, cb) => cb(null, __dirname + "/tmp/"),
   filename: (req, file, cb) => cb(null, file.originalname)
 });
 const store: UserDictionary = {};
 
-app
-  .use(express.static("pub"))
-  .get("/:directory", (req, res) => {
-    if(!fs.existsSync(`${cwd}/public/${req.params[0]}`)) res.sendFile(`${cwd}/pub/index.html`);
-  })
-  .post("/upload", multer({storage}).single("name"), (req, res) => res.end());
+app.use(express.static("public"));
+
+app.post("/upload", multer({storage}).single("name"), (req, res) => res.end());
+
+app.use((req, res) => res.status(404).sendFile(`/index.html`, { root: 'public/' }));
 
 io.on("connection", socket => {
   socket
@@ -80,4 +78,4 @@ io.on("connection", socket => {
     });
 });
   
-server.listen(port, () => console.log(`app listening on port ${port}`));
+server.listen(port);

@@ -5,26 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
-const fs_1 = __importDefault(require("fs"));
 const socket_io_1 = __importDefault(require("socket.io"));
 const multer_1 = __importDefault(require("multer"));
 const app = express_1.default();
 const server = http_1.default.createServer(app);
 const io = new socket_io_1.default.Server(server);
 const port = Number(process.env.PORT) || 80;
-const cwd = process.cwd();
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => cb(null, __dirname + "/tmp/"),
     filename: (req, file, cb) => cb(null, file.originalname)
 });
 const store = {};
-app
-    .use(express_1.default.static("pub"))
-    .get("/:directory", (req, res) => {
-    if (!fs_1.default.existsSync(`${cwd}/public/${req.params[0]}`))
-        res.sendFile(`${cwd}/pub/index.html`);
-})
-    .post("/upload", multer_1.default({ storage }).single("name"), (req, res) => res.end());
+app.use(express_1.default.static("public"));
+app.post("/upload", multer_1.default({ storage }).single("name"), (req, res) => res.end());
+app.use((req, res) => res.status(404).sendFile(`/index.html`, { root: 'public/' }));
 io.on("connection", socket => {
     socket
         .on("disconnect", () => {
@@ -69,5 +63,5 @@ io.on("connection", socket => {
         });
     });
 });
-server.listen(port, () => console.log(`app listening on port ${port}`));
+server.listen(port);
 //# sourceMappingURL=index.js.map

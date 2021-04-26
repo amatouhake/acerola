@@ -1,21 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import "./style/Reset";
+import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+//import "./style/Reset";
 import "./style/Main";
-import Header from "./script/Header";
+import Navbar from "./script/Navbar";
+import Home from "./script/Home";
+import NotFound from "./script/NotFound";
+
+
 
 class Layout extends React.Component {
   render() {
     return (
-      <Router>
-        <Header />
-        <Link to="/">Home</Link>
-        <Link to="/About">About</Link>
-        <Route exact path='/' component={Header}/>
-      </Router>
+      <BrowserRouter>
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route component={NotFound} />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
 
-ReactDOM.render(<Layout/>, document.body);
+ReactDOM.render(<Layout />, document.body);
