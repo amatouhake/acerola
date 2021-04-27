@@ -1,13 +1,14 @@
 var io = io();
 io.emit('join', {name: 'Player', room: 'chat'})
 
-let namae = document.getElementById('name');
+let namae = document.getElementById('namae');
 let chat = document.getElementById('chat');
 let submit = document.getElementById('submit');
 let msg = document.getElementById('msg');
 let font = document.getElementById('font');
 let file = document.getElementById('file');
 let selectedFont = font.options[font.selectedIndex].value;
+let style = file.parentElement.style;
 
 function emit(imgPath) {
     io.emit('chat', {
@@ -19,7 +20,7 @@ function emit(imgPath) {
         },
         img: imgPath
     });
-    msg.value = file.value =  '';
+    msg.value = file.value = style.color = style.fontWeight = '';
 }
 
 function getExt(filename) {
@@ -69,6 +70,13 @@ namae.onchange = () => {
 font.onchange = () => {
     selectedFont = font.options[font.selectedIndex].value;
     selectedFont = msg.style.fontFamily = selectedFont == 'sans-serif' ? 'sans-serif' : `'${selectedFont}', sans-serif`;
+}
+
+file.onchange = () => {
+    if(file.files.length) {
+        style.color = 'skyblue';
+        style.fontWeight = 'bold';
+    }
 }
 
 submit.onclick = e => {

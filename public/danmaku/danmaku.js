@@ -80,9 +80,11 @@ function update () {
 
     time += 1;
     if(shot.isDown) {
-        if(time%5 == 0) player_shot();
+        if(time%20 == 0) player_shot();
     };
-    if(time%10 == 0) spawn_enemy();
+    if(time%3 == 0) spawn_enemy();
+    if(time%13 == 0) spawn_enemy_two();
+    if(time%50 == 0) spawn_enemy_three();
 
     if(turbo.isDown && turbo_time <= 100) {
         player.anims.play('turbo', true);
@@ -124,10 +126,27 @@ function player_shot() {
 }
 
 function spawn_enemy() {
-    var enemy = meteos.create(450*Math.random(), 0, 'meteo');
-    enemy.setVelocityX(160*(Math.random()-0.5));
-    enemy.setVelocityY(160*Math.random()+160);
+    var enemy = meteos.create(450/2, 0, 'meteo');
+    var angle = Math.sin(time)*Math.PI*0.3;
+    enemy.setVelocityX(Math.sin(angle)*320);
+    enemy.setVelocityY(Math.cos(angle)*320);
 }
+
+function spawn_enemy_two() {
+    var enemy = meteos.create(450/2, 0, 'meteo');
+    var angle = Math.sin(time)*Math.PI*0.3;
+    enemy.setVelocityX(Math.sin(angle)*480);
+    enemy.setVelocityY(Math.cos(angle)*480);
+    enemy.setTint(0x00ffff);
+} 
+
+function spawn_enemy_three() {
+    var enemy = meteos.create(450/2, 0, 'meteo');
+    var angle = Math.sin(time)*Math.PI*0.01;
+    enemy.setVelocityX(Math.sin(angle)*200);
+    enemy.setVelocityY(Math.cos(angle)*200);
+    enemy.setTint(0x00ff00);
+} 
 
 function hitBullet(bullet, meteo) {
     bullet.disableBody(true, true);

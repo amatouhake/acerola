@@ -40,24 +40,24 @@
   background: rgb(9, 10, 21);
 }
 
-#id {
-  width: 16%;
+#namae {
+  width: 10%;
 }
 
 #msg {
-  width: 48%;
+  width: 40%;
 }
 
 #range {
-  width: 8%;
+  width: 5%;
 }
 
 #color {
-  width: 8%;
+  width: 5%;
 }
 
 #font {
-  width: 8%;
+  width: 10%;
 }
 
 #font option[value="sans-serif"] {
