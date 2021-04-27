@@ -2,15 +2,15 @@ import React from "react";
 import Jumbotron from "./Jumbotron";
 import Menu from "./Menu";
 
-class Navbar extends React.Component {
+class Home extends React.Component {
   render() {
     return (
       <div>
-        <Jumbotron />
+        <Jumbotron title="Home" subtitle="ホーム" content="チャットやゲームなどのページを選択するページです" />
         <Menu />
       </div>
     );
   }
 }
 
-export default Navbar;
+export default Home;

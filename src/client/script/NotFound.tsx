@@ -1,18 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Jumbotron from "./Jumbotron";
 
 class NotFound extends React.Component {
   render() {
     return (
-      <div className="container-fluid p-5 bg-secondary">
-        <div className="row">
-        　<div className="col">
-            <h1 className="display-4">404 Not Found</h1>
-            <p className="lead">ページが見つかりませんでした</p>
-            <hr className="my-4" />
-            <Link to="" className="btn btn-primary" role="button">ホームに戻る</Link>
-          </div>
-        　<div className="col-5"></div>
+      <div>
+        <Jumbotron title="404 Error" subtitle="Not Found" content="ページが見つかりませんでした" />
+        <div className="container-fluid p-4">
+          <Link to="" className="btn btn-primary" role="button">
+            <i className="fas fa-long-arrow-alt-left me-2"></i>
+            ホームに戻る
+          </Link>
         </div>
       </div>
     );

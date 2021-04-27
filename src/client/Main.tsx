@@ -7,8 +7,6 @@ import Navbar from "./script/Navbar";
 import Home from "./script/Home";
 import NotFound from "./script/NotFound";
 
-
-
 class Layout extends React.Component {
   render() {
     return (

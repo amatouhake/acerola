@@ -18,7 +18,7 @@ const server: http.Server = http.createServer(app);
 const io: socketIo.Server = new socketIo.Server(server);
 const port: number = Number(process.env.PORT) || 80;
 const storage: multer.StorageEngine = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, __dirname + "/tmp/"),
+  destination: (req, file, cb) => cb(null, `${process.cwd()}/tmp/`),
   filename: (req, file, cb) => cb(null, file.originalname)
 });
 const store: UserDictionary = {};

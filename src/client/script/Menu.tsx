@@ -6,23 +6,32 @@ class Menu extends React.Component {
     return (
       <div className="container-fluid p-4">
         <h1 className="display-6">Menu</h1>
-        <ul className="list-group">
-          <Link to="Chat" className="text-decoration-none">
-            <li className="list-group-item list-group-item-action rounded shadow-sm m-2 text-center ">
-              チャット
-            </li>
-          </Link>
-          <Link to="Danmaku" className="text-decoration-none">
-            <li className="list-group-item list-group-item-action rounded shadow-sm m-2 text-center">
-              弾幕
-            </li>
-          </Link>
-          <a href="Breakout" className="text-decoration-none">
-            <li className="list-group-item list-group-item-action rounded shadow-sm m-2 text-center">
-              ブロック崩し
-            </li>
+        <div className="row">
+          <a href="Chat" className="col text-decoration-none text-reset">
+            <div className="app card">
+              <div className="card-body">
+                <h5 className="card-title">チャット</h5>
+                <h6 className="card-subtitle text-muted">Communication</h6>
+              </div>
+            </div>
           </a>
-        </ul>
+          <Link to="Game" className="col text-decoration-none text-reset">
+            <div className="app card">
+              <div className="card-body">
+                <h5 className="card-title">弾幕</h5>
+                <h6 className="card-subtitle text-muted">Game</h6>
+              </div>
+            </div>
+          </Link>
+          <a href="Breakout" className="col text-decoration-none text-reset">
+            <div className="app card">
+              <div className="card-body">
+                <h5 className="card-title">ブロック崩し</h5>
+                <h6 className="card-subtitle text-muted">Game</h6>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
     );
   }
