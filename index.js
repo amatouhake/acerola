@@ -15,60 +15,61 @@ let storage = multer.diskStorage({
   }
 })
 
-app
-  .use(express.static('public'))
-  .get('/tmp/:file', (req, res) => res.sendFile(`${__dirname}/${req.url}`))
-  .post('/upload', multer({storage}).single('name'), (req, res) => res.end());
+app.use(express.static('public'));
+app.get('/tmp/:file', (req, res) => res.sendFile(`${__dirname}/${req.url}`));
+app.post('/upload', multer({storage}).single('name'), (req, res) => {
+  res.json({});
+  res.end();
+});
 
 io.on('connection', socket => {
-  socket
-    .on('join', msg => {
-      let room = msg.room;
-      store[socket.id] = {
-        name: msg.name,
-        room: room
-      };
-      socket.join(socket.id);
-      
+  socket.on('join', msg => {
+    let room = msg.room;
+    store[socket.id] = {
+      name: msg.name,
+      room: room
+    };
+    socket.join(socket.id);
+    
+    if(room == 'chat') {
+      io.emit(room, {
+        id: 'server',
+        name: 'server',
+        msg: {
+          text: `${msg.name}@${socket.id}が入室しました`,
+          color: 'green'
+        }
+      });
+    }
+  });
+
+  socket.on('disconnect', () => {
+    if(store[socket.id]) {
+      let user = store[socket.id];
+      let room = user.room;
+
       if(room == 'chat') {
         io.emit(room, {
           id: 'server',
           name: 'server',
           msg: {
-            text: `${msg.name}@${socket.id}が入室しました`,
-            color: 'green'
+            text: `${user.name}@${socket.id}が退室しました`,
+            color: 'red'
           }
         });
       }
-    })
 
-    .on('disconnect', () => {
-      if(store[socket.id]) {
-        let user = store[socket.id];
-        let room = user.room;
+      socket.leave(socket.id);
+      delete user;
+    }
+  });
 
-        if(room == 'chat') {
-          io.emit(room, {
-            id: 'server',
-            name: 'server',
-            msg: {
-              text: `${user.name}@${socket.id}が退室しました`,
-              color: 'red'
-            }
-          });
-        }
-
-        socket.leave(socket.id);
-        delete user;
-      }
-    })
-
-    .on('chat', msg => {
-      io.emit('chat', {
-        id: socket.id,
-        name: store[socket.id].name,
-        msg: msg.msg,
-        img: msg.img
-      });
-    })
+  socket.on('chat', msg => {
+    io.emit('chat', {
+      id: socket.id,
+      name: store[socket.id].name,
+      msg: msg.msg,
+      img: msg.img
+    });
+  });
 });

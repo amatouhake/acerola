@@ -9,6 +9,19 @@ let font = document.getElementById('font');
 let file = document.getElementById('file');
 let selectedFont = font.options[font.selectedIndex].value;
 
+function emit(imgPath) {
+    io.emit('chat', {
+        msg: {
+            text: msg.value,
+            size: size.value,
+            color: color.value,
+            font: selectedFont
+        },
+        img: imgPath
+    });
+    msg.value = file.value =  '';
+}
+
 function getExt(filename) {
 	let pos = filename.lastIndexOf('.');
 	if (pos === -1) return '';
@@ -21,6 +34,8 @@ function upload(filename) {
     fetch( '../upload', {
         method: 'POST',
         body: fd
+    }).then(res => {
+        emit(filename);
     });
 }
 
@@ -62,17 +77,9 @@ submit.onclick = e => {
         if(file.files.length) {
             imgPath = Math.random().toString(36).slice(-8) + getExt(file.files[0].name);
             upload(imgPath);
+        } else {
+            emit(imgPath);
         }
-        io.emit('chat', {
-            msg: {
-                text: msg.value,
-                size: size.value,
-                color: color.value,
-                font: selectedFont
-            },
-            img: imgPath
-        });
-        msg.value = file.value =  '';
     }
     return e.preventDefault();
 };
@@ -80,7 +87,7 @@ submit.onclick = e => {
 io.on('chat', msg => {
     chat.insertAdjacentHTML('afterbegin', `
         <div class="message">
-            <div class="name">${msg.name}</div>
+            <div class="name">${escape_html(msg.name)}</div>
             <div class="id">@${msg.id}</div>
             ${check(`<p style="
                 ${check('font-size: ', msg.msg.size, 'em;')}
