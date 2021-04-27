@@ -67,7 +67,7 @@ function update () {
         y: player.y
     });
     io.on('multi', msg => {
-        Object.keys(msg).forEach(id => {
+        Object.keys(msg).filter(k => k != io.id).forEach(id => {
             if(!Boolean(gumis[id])) {
                 gumis[id] = this.physics.add.sprite(msg[id].x, msg[id].y, 'gumi');
                 this.physics.add.collider(gumis[id], player);
