@@ -84,7 +84,6 @@ function update () {
     };
     if(time%3 == 0) spawn_enemy();
     if(time%13 == 0) spawn_enemy_two();
-    if(time%50 == 0) spawn_enemy_three();
 
     if(turbo.isDown && turbo_time <= 100) {
         player.anims.play('turbo', true);
@@ -138,15 +137,7 @@ function spawn_enemy_two() {
     enemy.setVelocityX(Math.sin(angle)*480);
     enemy.setVelocityY(Math.cos(angle)*480);
     enemy.setTint(0x00ffff);
-} 
-
-function spawn_enemy_three() {
-    var enemy = meteos.create(450/2, 0, 'meteo');
-    var angle = Math.sin(time)*Math.PI*0.01;
-    enemy.setVelocityX(Math.sin(angle)*200);
-    enemy.setVelocityY(Math.cos(angle)*200);
-    enemy.setTint(0x00ff00);
-} 
+}
 
 function hitBullet(bullet, meteo) {
     bullet.disableBody(true, true);

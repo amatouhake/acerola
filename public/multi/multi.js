@@ -43,6 +43,7 @@ function create () {
     platforms.create(config.width/2, config.height*0.9, 'grass');
 
     player = this.physics.add.sprite(config.width/2, config.height/2, 'gumi');
+    player.setTint(0xFF0000);
 
     w = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     s = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -64,7 +65,7 @@ function update () {
 
     io.emit('multi', {
         x: player.x,
-        y: player.y
+        y: player.y,
     });
     io.on('multi', msg => {
         Object.keys(msg).filter(k => k != io.id).forEach(id => {

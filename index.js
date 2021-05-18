@@ -30,8 +30,7 @@ io.on('connection', socket => {
       name: msg.name,
       room: room,
       x: 0,
-      y: 0,
-      action: false
+      y: 0
     };
     socket.join(socket.id);
     
